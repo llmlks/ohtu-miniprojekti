@@ -25,8 +25,8 @@ public class DbKirjaDAO implements KirjaDAO {
             Connection connection = database.connect();
             connection.setAutoCommit(false);
             PreparedStatement stmt = connection.prepareStatement("INSERT INTO Kirja "
-                    + "(otsikko, kirjoittaja, isbn)"
-                    + " VALUES (?, ?, ?)");
+                    + "(otsikko, kirjoittaja, isbn, luettu)"
+                    + " VALUES (?, ?, ?, 0)");
             stmt.setObject(1, kirja.getOtsikko());
             stmt.setObject(2, kirja.getKirjoittaja());
             stmt.setObject(3, kirja.getIsbn());
@@ -44,24 +44,43 @@ public class DbKirjaDAO implements KirjaDAO {
     @Override
     public ArrayList<Lukuvinkki> getAll() {
         ArrayList<Lukuvinkki> kirja_lukuvinkit = new ArrayList();
-        
+
         try {
             Connection connection = database.connect();
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Kirja");
 
             ResultSet rS = stmt.executeQuery();
 
-            while(rS.next()) {
+            while (rS.next()) {
                 Lukuvinkki kirja = new Kirja(rS.getString("otsikko"), rS.getString("kirjoittaja"), rS.getString("isbn"));
-                
+
                 kirja_lukuvinkit.add(kirja);
             }
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
+
         return kirja_lukuvinkit;
+    }
+
+    @Override
+    public void markRead(String id, boolean luettu) {
+        try {
+            Connection connection = database.connect();
+            connection.setAutoCommit(false);           
+            PreparedStatement stmt = connection.prepareStatement("UPDATE Kirja SET luettu=? WHERE id = id");
+            int luettuNum = (luettu)? 1 : 0;
+            stmt.setObject(1, luettuNum);           
+            stmt.executeUpdate();
+            stmt.close();
+            connection.commit();
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
 }

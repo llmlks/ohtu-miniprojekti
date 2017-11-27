@@ -1,12 +1,11 @@
-
 package domain;
 
-
 public class Kirja implements Lukuvinkki {
-    
+
     private String otsikko;
     private String kirjoittaja;
     private String isbn;
+    private boolean luettu;
 
     public Kirja(String otsikko, String kirjoittaja, String isbn) {
         this.otsikko = otsikko;
@@ -42,9 +41,18 @@ public class Kirja implements Lukuvinkki {
     public String toString() {
         return kirjoittaja + ": " + otsikko + " (" + isbn + ')';
     }
+
+    public boolean isLuettu() {
+        return luettu;
+    }
     
     
-    
-    
-    
+
+    public void setLuettu(boolean luettu) {
+        this.luettu = luettu;
+    }
+
+   
+
+
 }

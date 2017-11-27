@@ -25,6 +25,11 @@ public class StubKirjaDAO implements KirjaDAO {
         //Not yet done(täytyi vaihtaa kommentiksi, jotta testit toimivat)
     }
 
+    @Override
+    public void markRead(String id, boolean luettu) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
 
     
